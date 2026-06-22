@@ -1,0 +1,300 @@
+/* 🌟 ใส่หัวเชื้อตรงนี้เพื่อให้ html2canvas รู้จักฟอนต์ 'TH SarabunPSK' ตอนสั่ง Export PDF */
+@font-face {
+  font-family: 'TH SarabunPSK';
+  src: url('THSarabun.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TH Sarabun New';
+  src: url('THSarabun.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #c0c0c0;
+  font-family: 'TH SarabunPSK', 'TH Sarabun New', 'Sarabun', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 24px;
+}
+
+/* ====== Control Panel ====== */
+.control-panel {
+  background: #fff;
+  padding: 15px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  width: 794px;
+  z-index: 100;
+}
+.control-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 16px;
+  font-family: 'Sarabun', sans-serif;
+}
+.control-panel button {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-family: 'Sarabun', sans-serif;
+  background: #1a5276;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto;
+}
+.control-panel button:hover { background: #154360; }
+
+/* ====== แท็บเลือกหน้า ====== */
+.tabs { display: flex; gap: 8px; }
+.tabs button {
+  padding: 8px 16px;
+  font-size: 16px;
+  font-family: 'Sarabun', sans-serif;
+  border: none;
+  background: #ddd;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+.tabs button.active {
+  background: #fff;
+  font-weight: bold;
+  border-bottom: 2px solid #1a5276;
+}
+
+/* ====== Page Wrapper ====== */
+.page-wrapper {
+  position: relative;
+  width: 794px;
+  min-height: 1123px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: none;
+}
+.page-wrapper.active { display: block; }
+.page-wrapper canvas.pdf-bg { display: block; }
+
+/* ====== Input Fields ====== */
+.field {
+  position: absolute;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px dashed #7fb3d3;
+  font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
+  font-size: 22px;
+  color: #000;
+  outline: none;
+  padding: 0 4px;
+  line-height: 1.15; 
+}
+.field:focus {
+  border-bottom: 1.5px solid #1a5276;
+  background: rgba(26, 82, 118, 0.06);
+}
+.inline-field {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.fake-input {
+  border-bottom: 1.5px dashed #7fb3d3;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fake-input:empty::before {
+  content: attr(placeholder);
+  color: #999;
+  pointer-events: none;
+}
+
+/* ====== Dynamic Text & Committee ====== */
+.dynamic-text {
+  position: absolute;
+  font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
+  font-size: 22px; 
+  color: #000;
+  font-weight: normal;
+  line-height: 1.15;
+}
+
+.committee-container {
+  position: absolute;
+  width: 500px;
+}
+.committee-row {
+  margin-bottom: 0px; 
+  display: flex;
+  align-items: baseline; 
+}
+.committee-input {
+  width: 310px;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px dashed #7fb3d3;
+  font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
+  font-size: 22px; 
+  outline: none;
+  margin-right: 12px; 
+  padding: 0 4px;
+  line-height: 1.15; 
+}
+.committee-role {
+  font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
+  font-size: 22px; 
+  width: 150px;
+  text-align: left; 
+  line-height: 1.15; 
+}
+
+/* ====== สไตล์สำหรับกล่องจำลอง (โชว์การปัดบรรทัด) ====== */
+.fake-display {
+    font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
+    font-size: 22px;
+    color: #000;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.1;
+    border-bottom: 1.5px dashed #7fb3d3;
+    background: transparent;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ====== ตอน Export ซ่อนเส้น ====== */
+body.exporting .field, 
+body.exporting .committee-input,
+body.exporting .fake-input,
+body.exporting .fake-display,
+body.exporting .inline-flow-input {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+}
+body.exporting .control-panel, 
+body.exporting .tabs {
+  display: none !important;
+}
+
+/* =========================================
+   ====== 🌟 ท่าไม้ตายแก้สระบน/วรรณยุกต์หายตอน Export 🌟 ======
+   ========================================= */
+body.exporting .field,
+body.exporting .fake-input,
+body.exporting .committee-input,
+body.exporting .committee-role,
+body.exporting .dynamic-text,
+body.exporting .fake-display,
+body.exporting .inline-flow-input {
+    height: auto !important;          
+    line-height: 1.1 !important;     
+    padding-top: 20px !important;     
+    overflow: visible !important;
+    box-shadow: none !important;
+    margin-top: -20px !important; 
+}
+
+/* =========================================
+   📍 โซนปรับระยะขยับทีละช่อง (เฉพาะตอน Export PDF)
+   ========================================= */
+
+/* -------- หน้า 1 -------- */
+body.exporting #p1_to { margin-top: -21px !important; } 
+body.exporting #p1_name { transform: translateY(-0.75px) !important; }
+body.exporting #p1_program_display { margin-top: -20px !important; }
+body.exporting #p1_major_display { margin-top: -20px !important; }
+body.exporting #p1_thesis1 { margin-top: -20px !important; }
+body.exporting #p1_thesis2 { margin-top: -20px !important; }
+body.exporting #p1_thesis3 { margin-top: -20px !important; }
+
+/* -------- หน้า 2 -------- */
+body.exporting #p2_to { margin-top: -20px !important; }
+body.exporting #p2_name { margin-top: -20px !important; }
+body.exporting #p2_program_display { margin-top: -20px !important; }
+body.exporting #p2_major_display { margin-top: -20px !important; }
+body.exporting #p2_thesis1 { margin-top: -20px !important; }
+body.exporting #p2_thesis2 { margin-top: -20px !important; }
+body.exporting #p2_thesis3 { margin-top: -20px !important; }
+
+/* -------- ข้อความระบบ -------- */
+body.exporting #p1_degree       { transform: translateY(-0.75px) !important; }
+body.exporting #p1_program_text { transform: translateY(-0.2px) !important; }
+body.exporting #p1_thesis_word1 { transform: translateY(-0.2px) !important; }
+body.exporting #p1_thesis_word2 { margin-top: -20px !important; }
+body.exporting #p1_thesis_word3 { margin-top: -20px !important; }
+
+body.exporting #p2_degree       { margin-top: -20px !important; }
+body.exporting #p2_program_text { margin-top: -20px !important; }
+body.exporting #p2_thesis_word1 { margin-top: -20px !important; }
+body.exporting #p2_thesis_word2 { margin-top: -20px !important; }
+
+body.exporting .committee-input { margin-top: -20px !important; }
+/* body.exporting .committee-role จัดการรวมกับกลุ่มด้านบนแล้ว */
+
+body.exporting #p1_major_text,
+body.exporting #p2_major_text {
+    height: auto !important;
+    line-height: 1.15 !important;
+    padding-top: 20px !important;
+    margin-top: -20px !important;
+    overflow: visible !important;
+    display: inline-block;
+}
+
+/* =======================================================
+   🌟 โซนแก้ไขบั๊กช่องกรอกข้อความไหลแบบ Contenteditable 🌟
+   ======================================================= */
+.inline-flow-input {
+    display: inline !important;
+    position: static !important; /* ปลดล็อกพิกัดตายตัว ให้ไหลตามข้อความตัวหน้า */
+    outline: none;
+    cursor: text;
+    padding: 0 !important;
+    border-bottom: 1.5px dashed #7fb3d3;
+    line-height: 24px;
+    white-space: pre-wrap !important; /* เปิดระบบคำนวณช่องว่างแบบไหลอิสระ */
+    word-break: break-all !important; /* บังคับตัดคำเด็ดขาด */
+    line-break: anywhere !important; /* ตัดคำได้ทุกจุดแม้มีช่องว่างติดกัน */
+}
+
+/* 🚫 ดักทางทุกเบราว์เซอร์: ห้ามแอบสร้างกล่อง <div> หรือ <p> ซ้อนด้านในเวลาผู้ใช้กด Enter ให้ใช้ระบบไหลต่อเนื่อง */
+.inline-flow-input * {
+    display: inline !important;
+}
+
+/* 💡 เมื่อช่องพิมพ์เรื่องว่างเปล่า ให้กางความกว้างออกเพื่อให้มีเส้นประสำหรับคลิกพิมพ์ได้ */
+.inline-flow-input:empty {
+    display: inline-block !important;
+    min-width: 200px;
+}
+
+/* =======================================================
+   🌟 กล่องล่องหน (Ghost Anchor) - ต่อท้ายข้อความ inline-flow
+   เมื่อข้อความปัดบรรทัด กล่องนี้จะไหลลงตาม
+   แล้ว element ลูกข้างในจะสไลด์ตามอัตโนมัติ
+   ======================================================= */
+.ghost-anchor {
+    position: relative;
+    display: block;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    font-size: 0;   /* ป้องกันช่องว่างจาก whitespace */
+    line-height: 0;  /* ป้องกันความสูงเพิ่มจาก line box */
+}
