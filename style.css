@@ -16,7 +16,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: #c0c0c0;
+  background: #ffffff;
   font-family: 'TH SarabunPSK', 'TH Sarabun New', 'Sarabun', sans-serif;
   display: flex;
   flex-direction: column;
@@ -215,6 +215,8 @@ body.exporting .inline-flow-input {
 /* -------- หน้า 1 -------- */
 body.exporting #p1_to { margin-top: -21px !important; } 
 body.exporting #p1_name { transform: translateY(-0.75px) !important; }
+body.exporting #p1_doc_num { transform: translateY(-0.75px) !important; }
+body.exporting #p1_subject_container { margin-top: -1.5px !important; }
 body.exporting #p1_program_display { margin-top: -20px !important; }
 body.exporting #p1_major_display { margin-top: -20px !important; }
 body.exporting #p1_thesis1 { margin-top: -20px !important; }
@@ -224,6 +226,9 @@ body.exporting #p1_thesis3 { margin-top: -20px !important; }
 /* -------- หน้า 2 -------- */
 body.exporting #p2_to { margin-top: -20px !important; }
 body.exporting #p2_name { margin-top: -20px !important; }
+body.exporting #p2_doc_num { margin-top: -20px !important; }
+body.exporting #p2_doc_num_container { margin-top: -1.1px !important; }
+body.exporting #p2_subject_container { margin-top: -1.5px !important; }
 body.exporting #p2_program_display { margin-top: -20px !important; }
 body.exporting #p2_major_display { margin-top: -20px !important; }
 body.exporting #p2_thesis1 { margin-top: -20px !important; }

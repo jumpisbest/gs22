@@ -54,7 +54,11 @@
     <div id="page1" class="page-wrapper active">
         <canvas id="pdf-canvas-1" class="pdf-bg"></canvas>
 
-        <input class="field" id="p1_date" style="top:198px; left:420px; width:200px; text-align: left; transform: translateY(0.2px)" placeholder="เดือน ปี">
+        <div id="p1_doc_num_container" style="position: absolute; top: 134px; left: 102px; font-family: 'TH SarabunPSK', 'TH Sarabun New'; font-size: 22px; color: black; line-height: 24px; background: white;">
+            ที่ อว ๘๒๐๕.๐๙/<input class="field inline-field" id="p1_doc_num" style="position: relative; width: 50px; background: transparent; border: none; border-bottom: 1.5px dashed #7fb3d3; font-family: inherit; font-size: inherit; outline: none; padding: 0; color: black; text-align: center;" placeholder="กรอก">
+        </div>
+
+        <input class="field" id="p1_date" style="top:198px; left:420px; width:200px; text-align: left; transform: translateY(0.2px)" placeholder="วัน เดือน ปี">
 
         <div id="p1_subject_container" style="position: absolute; top: 248px; left: 138px; font-family: 'TH SarabunPSK', 'TH Sarabun New'; font-size: 22px; color: black; line-height: 24px; white-space: nowrap;">
             ขอความอนุเคราะห์
@@ -93,7 +97,11 @@
     <div id="page2" class="page-wrapper">
         <canvas id="pdf-canvas-2" class="pdf-bg"></canvas>
 
-        <input class="field" id="p2_date" style="top:168px; left:363px; width:200px; text-align: left; transform: translateY(-0.5px)" placeholder="เดือน ปี">
+        <div id="p2_doc_num_container" style="position: absolute; top: 168px; left: 112px; font-family: 'TH SarabunPSK', 'TH Sarabun New'; font-size: 22px; color: black; line-height: 24px; background: white; transform: translateY(-0.5px);">
+            อว ๘๒๐๕.๐๙/<input class="field inline-field" id="p2_doc_num" style="position: relative; width: 50px; background: transparent; border: none; border-bottom: 1.5px dashed #7fb3d3; font-family: inherit; font-size: inherit; outline: none; padding: 0; color: black; text-align: center;" placeholder="กรอก">
+        </div>
+
+        <input class="field" id="p2_date" style="top:168px; left:363px; width:200px; text-align: left; transform: translateY(-0.5px)" placeholder="วัน เดือน ปี">
 
         <div id="p2_subject_container" style="position: absolute; top: 197px; left: 140px; font-family: 'TH SarabunPSK', 'TH Sarabun New'; font-size: 22px; color: black; line-height: 24px; white-space: nowrap;">
             ขอความอนุเคราะห์
