@@ -224,6 +224,7 @@ body.exporting #p1_thesis2 { margin-top: -20px !important; }
 body.exporting #p1_thesis3 { margin-top: -20px !important; }
 
 /* -------- หน้า 2 -------- */
+body.exporting #p2_date { margin-top: -21px !important; }
 body.exporting #p2_to { margin-top: -20px !important; }
 body.exporting #p2_name { margin-top: -20px !important; }
 body.exporting #p2_doc_num { margin-top: -20px !important; }
