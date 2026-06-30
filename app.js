@@ -43,6 +43,19 @@ async function renderPage(pdfDoc, pageNum) {
 // ===== เมื่อเว็บโหลดเสร็จ =====
 document.addEventListener('DOMContentLoaded', () => {
   loadPDF();
+  initThaiJustify();
+
+  // 🌟 ฟังก์ชันซิงค์ข้อมูลระหว่างหน้า 1 และหน้า 2
+  const setupSync = (id1, id2) => {
+    const el1 = document.getElementById(id1);
+    const el2 = document.getElementById(id2);
+    if(el1 && el2) {
+      el1.addEventListener('input', () => { el2.textContent = el1.textContent; if(typeof applyCustomJustify==='function') applyCustomJustify(); });
+      el2.addEventListener('input', () => { el1.textContent = el2.textContent; if(typeof applyCustomJustify==='function') applyCustomJustify(); });
+    }
+  };
+  setupSync('p1_name', 'p2_name');
+  setupSync('p1_student_id', 'p2_student_id');
 
   // 🌟 ฟังก์ชันจัดการความกว้างของ Input ตามข้อความที่พิมพ์สำหรับ inline-field
   const autoResizeInput = (input) => {
@@ -62,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newWidth = span.offsetWidth + 0;
     input.style.width = newWidth + 'px';
     document.body.removeChild(span);
+    if (typeof applyCustomJustify === 'function') applyCustomJustify();
   };
 
   document.querySelectorAll('.inline-field').forEach(input => {
@@ -98,8 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('p1_program')?.addEventListener('change', handleProgramInput);
   document.getElementById('p2_program')?.addEventListener('change', handleProgramInput);
+  
+  document.querySelectorAll('.inline-flow-input').forEach(input => {
+      input.addEventListener('input', () => {
+          if (typeof applyCustomJustify === 'function') applyCustomJustify();
+      });
+  });
 
   updateProgramList();
+  generateCommittee();
 
   setupReqFlow('p1_thesis_value', ['p1_thesis1', 'p1_thesis2', 'p1_thesis3']);
   setupReqFlow('p2_thesis_value', ['p2_thesis1', 'p2_thesis2', 'p2_thesis3']);
@@ -242,6 +263,7 @@ function updateDynamicTexts() {
   document.querySelectorAll('.display-program').forEach(el => el.innerText = program);
   document.querySelectorAll('.display-degree').forEach(el => el.innerText = degree);
   document.querySelectorAll('.thesis-word').forEach(el => el.innerText = thesis);
+  if (typeof applyCustomJustify === 'function') setTimeout(applyCustomJustify, 50);
 }
 
 function generateCommittee() {
@@ -252,41 +274,73 @@ function generateCommittee() {
   containerP1.innerHTML = '';
   containerP2.innerHTML = '';
 
-  if (isNaN(count) || count === 0) return;
+  const singleCommWrapperP1 = document.getElementById('p1_single_committee_wrapper');
+  const singleCommWrapperP2 = document.getElementById('p2_single_committee_wrapper');
+  const thesisWord2P1 = document.getElementById('p1_thesis_word2');
+  const thesisWord2P2 = document.getElementById('p2_thesis_word2');
 
-  for (let i = 0; i < count; i++) {
-    const roleText = (i === 0) ? "ประธานกรรมการ" : "กรรมการ";
-    
-    const rowHTML_P1 = `
-      <div class="committee-row">
-          <input type="text" class="committee-input" placeholder="ชื่อ-นามสกุล" style="padding-top: 1px; transform: translateY(5px);">
-          <div class="committee-role" style="transform: translateY(0px);">${roleText}</div>
-      </div>
-    `;
-    
-    const rowHTML_P2 = `
-      <div class="committee-row">
-          <input type="text" class="committee-input" placeholder="ชื่อ-นามสกุล" style="padding-top: 1px; transform: translateY(0px);">
-          <div class="committee-role" style="transform: translateY(0px);">${roleText}</div>
-      </div>
-    `;
-    
-    containerP1.innerHTML += rowHTML_P1;
-    containerP2.innerHTML += rowHTML_P2;
+  if (singleCommWrapperP1) singleCommWrapperP1.style.display = 'none';
+  if (singleCommWrapperP2) singleCommWrapperP2.style.display = 'none';
+  if (thesisWord2P1) thesisWord2P1.style.display = 'inline';
+  if (thesisWord2P2) thesisWord2P2.style.display = 'inline';
+
+  if (isNaN(count) || count === 0) {
+      document.querySelectorAll('.post-committee').forEach(el => {
+          const offset = parseFloat(el.dataset.postOffset || 0);
+          el.dataset.absTop = 507 + offset; 
+      });
+      initGhostAnchors();
+      return;
   }
 
-  // ปรับระยะห่างของข้อความด้านล่างกรรมการให้อยู่ชิดติดกัน (เว้น 1 บรรทัดไม่ให้ทับเส้นประ)
-  // แต่ละแถวสูง 24px และบวกเพิ่มอีก 24px สำหรับการเว้น 1 บรรทัด
-  const baseTop = 507 + (count * 24) + 24;
-  const postCommitteeStart = baseTop;
+  if (count === 1) {
+      if (singleCommWrapperP1) singleCommWrapperP1.style.display = 'inline';
+      if (singleCommWrapperP2) singleCommWrapperP2.style.display = 'inline';
+      if (thesisWord2P1) thesisWord2P1.style.display = 'none';
+      if (thesisWord2P2) thesisWord2P2.style.display = 'none';
 
-  document.querySelectorAll('.post-committee').forEach(el => {
-      const offset = parseFloat(el.dataset.postOffset || 0);
-      el.dataset.absTop = postCommitteeStart + offset;
-  });
+      const baseTop = 483;
+      const postCommitteeStart = baseTop;
+      document.querySelectorAll('.post-committee').forEach(el => {
+          const offset = parseFloat(el.dataset.postOffset || 0);
+          el.dataset.absTop = postCommitteeStart + offset;
+      });
+  } else {
+      for (let i = 0; i < count; i++) {
+        const roleText = (i === 0) ? "ประธานกรรมการ" : "กรรมการ";
+        
+        const rowHTML_P1 = `
+          <div class="committee-row">
+              <input type="text" class="committee-input" placeholder="ชื่อ-นามสกุล">
+              <div class="committee-role">${roleText}</div>
+          </div>
+        `;
+        
+        const rowHTML_P2 = `
+          <div class="committee-row">
+              <input type="text" class="committee-input" placeholder="ชื่อ-นามสกุล">
+              <div class="committee-role">${roleText}</div>
+          </div>
+        `;
+        
+        containerP1.innerHTML += rowHTML_P1;
+        containerP2.innerHTML += rowHTML_P2;
+      }
+
+      // ปรับระยะห่างของข้อความด้านล่างกรรมการให้อยู่ชิดติดกัน (ไม่เว้นบรรทัด)
+      // แต่ละแถวสูง 24px
+      const baseTop = 507 + (count * 24);
+      const postCommitteeStart = baseTop;
+
+      document.querySelectorAll('.post-committee').forEach(el => {
+          const offset = parseFloat(el.dataset.postOffset || 0);
+          el.dataset.absTop = postCommitteeStart + offset;
+      });
+  }
 
   // รีเซ็ตตำแหน่งใหม่ทั้งหมด
   initGhostAnchors();
+  if (typeof applyCustomJustify === 'function') setTimeout(applyCustomJustify, 50);
 }
 
 function setupReqFlow(hiddenValId, fieldIds) {
@@ -423,6 +477,7 @@ function updateProgramList() {
             p2Program.add(new Option(p, p));
         });
     }
+    if (typeof applyCustomJustify === 'function') setTimeout(applyCustomJustify, 50);
 }
 
 function handleProgramInput(event) {
@@ -455,5 +510,68 @@ function handleProgramInput(event) {
     // 🌟 ส่งค่าสาขาวิชาไปให้กล่องจำลองโชว์ผลบนจอเวลามีการเลือกใหม่
     majorSelect.onchange = function() {
         if(majorDisp) majorDisp.innerText = this.value || '-- เลือก --';
+        if (typeof applyCustomJustify === 'function') applyCustomJustify();
     };
+    if (typeof applyCustomJustify === 'function') setTimeout(applyCustomJustify, 50);
 }
+
+// 🌟 3. อัลกอริทึมจัดช่องว่างชิดขอบ (Word-like Justification)
+function initThaiJustify() {
+    document.querySelectorAll('.thai-justify-container').forEach(container => {
+        container.style.textAlign = 'justify';
+        container.style.textJustify = 'inter-character'; // กระจายช่องว่างระดับตัวอักษรแบบ MS Word
+    });
+    document.fonts.ready.then(() => {
+        setTimeout(applyCustomJustify, 500);
+    });
+}
+
+function wrapThaiWords(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.nodeValue;
+        if (!text.trim()) return;
+        
+        const segmenter = new Intl.Segmenter('th', { granularity: 'word' });
+        const segments = segmenter.segment(text);
+        const fragment = document.createDocumentFragment();
+        
+        let hasChanges = false;
+        for (const { segment } of segments) {
+            if (segment.trim().length > 0) {
+                const span = document.createElement('span');
+                span.className = 'thai-word';
+                span.textContent = segment;
+                fragment.appendChild(span);
+                hasChanges = true;
+            } else {
+                fragment.appendChild(document.createTextNode(segment));
+            }
+        }
+        if (hasChanges) {
+            node.parentNode.replaceChild(fragment, node);
+        }
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+        if (['INPUT', 'SELECT', 'TEXTAREA', 'STYLE', 'SCRIPT', 'CANVAS'].includes(node.tagName)) return;
+        if (node.classList.contains('thai-word')) return;
+        if (node.classList.contains('fake-input') || node.classList.contains('inline-flow-input')) return;
+        if (node.id && node.id.includes('ghost-anchor')) return;
+        
+        Array.from(node.childNodes).forEach(wrapThaiWords);
+    }
+}
+
+function applyCustomJustify() {
+    // ซ่อน native justify
+    document.querySelectorAll('.thai-justify-container').forEach(c => {
+        c.style.textAlign = 'left';
+    });
+
+    // ให้บราวเซอร์จัดการ Justify แบบ Native
+    document.querySelectorAll('.thai-justify-container').forEach(c => {
+        c.style.textAlign = 'justify';
+    });
+    
+    // อัปเดต ghost anchor ใหม่
+    initGhostAnchors();
+}
+

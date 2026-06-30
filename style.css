@@ -98,7 +98,8 @@ body {
   color: #000;
   outline: none;
   padding: 0 4px;
-  line-height: 1.15; 
+  line-height: 24px !important; 
+  box-sizing: border-box;
 }
 .field:focus {
   border-bottom: 1.5px solid #1a5276;
@@ -129,7 +130,27 @@ body {
   font-size: 22px; 
   color: #000;
   font-weight: normal;
-  line-height: 1.15;
+  line-height: 24px;
+}
+
+/* ====== Thai Justification System ====== */
+.thai-justify-container {
+    font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
+    font-size: 22px; 
+    text-align: left; 
+    line-height: 24px !important;
+}
+
+.thai-word {
+    display: inline;
+    white-space: nowrap;
+}
+
+.thai-justify-container *, .post-committee * {
+  line-height: 24px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  vertical-align: baseline !important;
 }
 
 .committee-container {
@@ -140,6 +161,9 @@ body {
   margin-bottom: 0px; 
   display: flex;
   align-items: baseline; 
+  height: 24px;
+  line-height: 24px;
+  box-sizing: border-box;
 }
 .committee-input {
   width: 310px;
@@ -151,14 +175,15 @@ body {
   outline: none;
   margin-right: 12px; 
   padding: 0 4px;
-  line-height: 1.15; 
+  line-height: 24px;
+  box-sizing: border-box;
 }
 .committee-role {
   font-family: 'TH SarabunPSK', 'TH Sarabun New', sans-serif;
   font-size: 22px; 
   width: 150px;
   text-align: left; 
-  line-height: 1.15; 
+  line-height: 24px; 
 }
 
 /* ====== สไตล์สำหรับกล่องจำลอง (โชว์การปัดบรรทัด) ====== */
@@ -168,7 +193,7 @@ body {
     color: #000;
     white-space: normal;
     word-break: break-word;
-    line-height: 1.1;
+    line-height: 24px !important;
     border-bottom: 1.5px dashed #7fb3d3;
     background: transparent;
     padding: 0;
@@ -271,11 +296,15 @@ body.exporting #p2_major_text {
     cursor: text;
     padding: 0 !important;
     border-bottom: 1.5px dashed #7fb3d3;
-    line-height: 24px;
-    white-space: pre-wrap !important; /* เปิดระบบคำนวณช่องว่างแบบไหลอิสระ */
-    word-break: break-all !important; /* บังคับตัดคำเด็ดขาด */
-    line-break: anywhere !important; /* ตัดคำได้ทุกจุดแม้มีช่องว่างติดกัน */
+    line-height: 24px !important;
+    box-sizing: border-box;
+    white-space: pre-wrap !important; 
+    word-break: break-all !important; 
+    line-break: anywhere !important; 
+    overflow: visible !important;
+    vertical-align: baseline !important;
 }
+
 
 /* 🚫 ดักทางทุกเบราว์เซอร์: ห้ามแอบสร้างกล่อง <div> หรือ <p> ซ้อนด้านในเวลาผู้ใช้กด Enter ให้ใช้ระบบไหลต่อเนื่อง */
 .inline-flow-input * {
@@ -304,3 +333,5 @@ body.exporting #p2_major_text {
     font-size: 0;   /* ป้องกันช่องว่างจาก whitespace */
     line-height: 0;  /* ป้องกันความสูงเพิ่มจาก line box */
 }
+body.exporting .qr-box-empty { display: none !important; }
+body.exporting #p1_qr_remove { display: none !important; }
