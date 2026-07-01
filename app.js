@@ -228,6 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 sel.style.display = 'none';
             });
             
+            // ซ่อนป้าย GS 22 ตอน Export
+            clonedDoc.querySelectorAll('.gs-badge').forEach(badge => {
+                badge.style.display = 'none';
+            });
+            
             clonedDoc.querySelectorAll('.fake-input, .fake-display').forEach(applyDiacriticFix);
             clonedDoc.querySelectorAll('.dynamic-text, .dynamic-text-inline').forEach(applyDiacriticFix);
           }
