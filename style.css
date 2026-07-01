@@ -348,5 +348,5 @@ body.exporting #p2_major_text {
     font-size: 0;   /* ป้องกันช่องว่างจาก whitespace */
     line-height: 0;  /* ป้องกันความสูงเพิ่มจาก line box */
 }
-body.exporting .qr-box-empty { display: none !important; }
+body.exporting .qr-box-empty { visibility: hidden !important; }
 body.exporting #p1_qr_remove { display: none !important; }
